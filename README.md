@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/effects.png" alt="Scenes in the Effect menu of a Govee light" width="420">
+  <img src="docs/images/demo.gif" alt="Picking a scene in Home Assistant lights up the Govee lamp" width="540">
 </p>
 
 ## ✨ Highlights
@@ -61,6 +61,10 @@ Click the button below, then **Download** and restart Home Assistant.
 If you already use the built-in integration, there is nothing else to do: your lights come back with the new Effect list after the restart. Otherwise add **Govee lights local** from **Settings > Devices & services**.
 
 ## 🎨 Usage
+
+<p align="center">
+  <img src="docs/images/effects.png" alt="Scenes in the Effect menu of a Govee light" width="420">
+</p>
 
 Open a light and pick a scene in the **Effect** menu. Scenes are named `Category · Name`, for example `Natural · Rainbow` or `Festival · Christmas`, and sorted by category.
 
