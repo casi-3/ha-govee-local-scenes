@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Ar mhaith leat tos\u00fa ag socr\u00fa?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "An\u00e1laigh",
+                            "candlelight": "Coinnle",
+                            "crossing": "Trasn\u00fa",
+                            "dating": "D\u00e1ta\u00ed",
+                            "energetic": "Fuinni\u00fail",
+                            "movie": "Scann\u00e1n",
+                            "none": "Dada",
+                            "romantic": "R\u00f3m\u00e1ns\u00fail",
+                            "snowflake": "Cal\u00f3g sneachta",
+                            "sunrise": "\u00c9ir\u00ed gr\u00e9ine",
+                            "sunset": "Lu\u00ed na gr\u00e9ine",
+                            "twinkle": "Tintreach"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "N\u00edor aims\u00edodh aon fheist\u00ed ar an l\u00edonra"
+        },
+        "port_in_use": {
+            "message": "T\u00e1 port {port} in \u00fas\u00e1id cheana f\u00e9in"
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Vill du starta installationen?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Andas",
+                            "candlelight": "Levande ljus",
+                            "crossing": "Korsning",
+                            "dating": "Dejting",
+                            "energetic": "Energisk",
+                            "movie": "Film",
+                            "none": "Ingen",
+                            "romantic": "Romantisk",
+                            "snowflake": "Sn\u00f6flinga",
+                            "sunrise": "Soluppg\u00e5ng",
+                            "sunset": "Solnedg\u00e5ng",
+                            "twinkle": "Tindra"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Inga enheter hittades i n\u00e4tverket"
+        },
+        "port_in_use": {
+            "message": "Porten {port} anv\u00e4nds redan"
+        }
+    }
+}

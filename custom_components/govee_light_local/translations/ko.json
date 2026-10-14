@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "\uc124\uc815\uc744 \uc2dc\uc791\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "\uc228 \uc26c\ub2e4",
+                            "candlelight": "\ucd1b\ubd88",
+                            "crossing": "\ud6a1\ub2e8",
+                            "dating": "\ub370\uc774\ud2b8",
+                            "energetic": "\ud65c\uae30\ucc2c",
+                            "movie": "\uc601\ud654",
+                            "none": "\uc5c6\uc74c",
+                            "romantic": "\ub85c\ub9e8\ud2f1",
+                            "snowflake": "\ub208\uc1a1\uc774",
+                            "sunrise": "\ud574\ub3cb\uc774",
+                            "sunset": "\uc77c\ubab0",
+                            "twinkle": "\uacbd\ucf8c\ud55c \uc6c0\uc9c1\uc784"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "\ub124\ud2b8\uc6cc\ud06c\uc5d0\uc11c \uae30\uae30\ub97c \ucc3e\uc744 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4"
+        },
+        "port_in_use": {
+            "message": "\ud3ec\ud2b8 {port} \uc774\ubbf8 \uc0ac\uc6a9 \uc911\uc785\ub2c8\ub2e4."
+        }
+    }
+}

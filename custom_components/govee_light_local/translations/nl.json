@@ -1,0 +1,38 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Wil je beginnen met instellen?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Ademen",
+                            "candlelight": "Kaarslicht",
+                            "crossing": "Kruisen",
+                            "dating": "Daten",
+                            "energetic": "Energiek",
+                            "movie": "Film",
+                            "none": "Geen",
+                            "romantic": "Romantisch",
+                            "snowflake": "Sneeuwvlok",
+                            "sunrise": "Zonsopkomst",
+                            "sunset": "Zonsondergang",
+                            "twinkle": "Fonkelen"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Geen apparaten gevonden op het netwerk"
+        }
+    }
+}

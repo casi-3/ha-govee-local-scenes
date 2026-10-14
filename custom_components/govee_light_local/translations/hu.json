@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Elkezdi a be\u00e1ll\u00edt\u00e1st?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "L\u00e9legz\u00e9s",
+                            "candlelight": "Gyertyaf\u00e9ny",
+                            "crossing": "\u00c1tkel\u00e9s",
+                            "dating": "Randev\u00fa",
+                            "energetic": "Energetikus",
+                            "movie": "Mozi",
+                            "none": "Nincs",
+                            "romantic": "Romantikus",
+                            "snowflake": "H\u00f3pehely",
+                            "sunrise": "Napfelkelte",
+                            "sunset": "Naplemente",
+                            "twinkle": "Pisl\u00e1kol\u00e1s"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Nem tal\u00e1lhat\u00f3 eszk\u00f6z a h\u00e1l\u00f3zaton"
+        },
+        "port_in_use": {
+            "message": "A {port} port m\u00e1r haszn\u00e1latban van"
+        }
+    }
+}

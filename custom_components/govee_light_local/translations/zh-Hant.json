@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "\u662f\u5426\u8981\u958b\u59cb\u8a2d\u5b9a\uff1f"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "\u547c\u5438",
+                            "candlelight": "\u71ed\u5149",
+                            "crossing": "\u7a7f\u8d8a",
+                            "dating": "\u7d04\u6703",
+                            "energetic": "\u7cbe\u529b\u5145\u6c9b",
+                            "movie": "\u96fb\u5f71",
+                            "none": "\u7121",
+                            "romantic": "\u6d6a\u6f2b",
+                            "snowflake": "\u96ea\u82b1",
+                            "sunrise": "\u65e5\u51fa",
+                            "sunset": "\u65e5\u843d",
+                            "twinkle": "\u9583\u720d"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "\u7db2\u8def\u4e0a\u627e\u4e0d\u5230\u88dd\u7f6e"
+        },
+        "port_in_use": {
+            "message": "\u901a\u8a0a\u57e0 {port}  \u5df2\u5728\u4f7f\u7528\u4e2d\u3002"
+        }
+    }
+}

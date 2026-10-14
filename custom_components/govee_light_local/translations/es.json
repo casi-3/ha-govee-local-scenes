@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "\u00bfQuieres iniciar la configuraci\u00f3n?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Respirar",
+                            "candlelight": "Luz de velas",
+                            "crossing": "Cruce",
+                            "dating": "Cita",
+                            "energetic": "En\u00e9rgico",
+                            "movie": "Pel\u00edcula",
+                            "none": "Ninguno",
+                            "romantic": "Rom\u00e1ntico",
+                            "snowflake": "Copo de nieve",
+                            "sunrise": "Amanecer",
+                            "sunset": "Puesta de sol",
+                            "twinkle": "Twinkle"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "No se encontraron dispositivos en la red"
+        },
+        "port_in_use": {
+            "message": "El puerto {port} ya est\u00e1 en uso"
+        }
+    }
+}

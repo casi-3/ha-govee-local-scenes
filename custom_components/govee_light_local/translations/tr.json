@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Kurulumu ba\u015flatmak istiyor musunuz?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Nefes al",
+                            "candlelight": "Mum \u0131\u015f\u0131\u011f\u0131",
+                            "crossing": "Ge\u00e7i\u015f",
+                            "dating": "Fl\u00f6rt",
+                            "energetic": "Enerjik",
+                            "movie": "Film",
+                            "none": "Hi\u00e7biri",
+                            "romantic": "Romantik",
+                            "snowflake": "Kar tanesi",
+                            "sunrise": "G\u00fcn Do\u011fumu",
+                            "sunset": "G\u00fcn Bat\u0131m\u0131",
+                            "twinkle": "P\u0131r\u0131lt\u0131"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "A\u011fda cihaz bulunamad\u0131"
+        },
+        "port_in_use": {
+            "message": "Port {port} zaten kullan\u0131mda"
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "M\u00f6chtest du mit der Einrichtung beginnen?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Atmen",
+                            "candlelight": "Kerzenlicht",
+                            "crossing": "Kreuzung",
+                            "dating": "Dating",
+                            "energetic": "Energetisch",
+                            "movie": "Film",
+                            "none": "Kein",
+                            "romantic": "Romantisch",
+                            "snowflake": "Schneeflocke",
+                            "sunrise": "Sonnenaufgang",
+                            "sunset": "Sonnenuntergang",
+                            "twinkle": "Funkeln"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Keine Ger\u00e4te im Netzwerk gefunden"
+        },
+        "port_in_use": {
+            "message": "Port {port} wird bereits verwendet"
+        }
+    }
+}

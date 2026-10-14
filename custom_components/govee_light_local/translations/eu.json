@@ -1,0 +1,30 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Konfigurazioa hasi nahi duzu?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "movie": "Filma",
+                            "none": "Bat ere ez",
+                            "sunrise": "Egunsentia",
+                            "sunset": "Ilunabarra"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Ez da sarean gailurik aurkitu"
+        }
+    }
+}

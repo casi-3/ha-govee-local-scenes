@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Quer dar in\u00edcio \u00e0 configura\u00e7\u00e3o?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Respirar",
+                            "candlelight": "Luz de velas",
+                            "crossing": "Travessia",
+                            "dating": "Namoro",
+                            "energetic": "Energ\u00e9tico",
+                            "movie": "Filme",
+                            "none": "Nenhum",
+                            "romantic": "Rom\u00e2ntico",
+                            "snowflake": "Floco de neve",
+                            "sunrise": "Nascer do sol",
+                            "sunset": "P\u00f4r do sol",
+                            "twinkle": "Cintila\u00e7\u00e3o"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Nenhum dispositivo encontrado na rede"
+        },
+        "port_in_use": {
+            "message": "A porta {port} j\u00e1 est\u00e1 a ser utilizada"
+        }
+    }
+}

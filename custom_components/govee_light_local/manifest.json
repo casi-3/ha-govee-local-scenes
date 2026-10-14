@@ -1,0 +1,18 @@
+{
+  "domain": "govee_light_local",
+  "name": "Govee lights local",
+  "codeowners": [
+    "@casi-3"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "network"
+  ],
+  "documentation": "https://github.com/casi-3/ha-govee-local-scenes",
+  "iot_class": "local_push",
+  "requirements": [
+    "govee-local-api==3.1.0"
+  ],
+  "issue_tracker": "https://github.com/casi-3/ha-govee-local-scenes/issues",
+  "version": "1.0.0"
+}

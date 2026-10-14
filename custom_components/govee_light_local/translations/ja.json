@@ -1,0 +1,38 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "\u30bb\u30c3\u30c8\u30a2\u30c3\u30d7\u3092\u958b\u59cb\u3057\u307e\u3059\u304b\uff1f"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "\u547c\u5438",
+                            "candlelight": "\u30ad\u30e3\u30f3\u30c9\u30eb\u30e9\u30a4\u30c8",
+                            "crossing": "\u30af\u30ed\u30c3\u30b7\u30f3\u30b0",
+                            "dating": "\u30c7\u30fc\u30c8",
+                            "energetic": "\u30a8\u30cd\u30eb\u30ae\u30c3\u30b7\u30e5",
+                            "movie": "\u52d5\u753b",
+                            "none": "\u306a\u3057",
+                            "romantic": "\u30ed\u30de\u30f3\u30c1\u30c3\u30af",
+                            "snowflake": "\u30b9\u30ce\u30fc\u30d5\u30ec\u30fc\u30af",
+                            "sunrise": "\u65e5\u306e\u51fa",
+                            "sunset": "\u65e5\u306e\u5165\u308a",
+                            "twinkle": "\u304d\u3089\u304d\u3089"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "\u30cd\u30c3\u30c8\u30ef\u30fc\u30af\u4e0a\u306b\u30c7\u30d0\u30a4\u30b9\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093"
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Voulez-vous commencer la configuration\u00a0?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Respiration",
+                            "candlelight": "Lueur de bougie",
+                            "crossing": "Croisement",
+                            "dating": "Rendez-vous galant",
+                            "energetic": "\u00c9nergique",
+                            "movie": "Film",
+                            "none": "Aucun",
+                            "romantic": "Romantique",
+                            "snowflake": "Flocon de neige",
+                            "sunrise": "Lever du soleil",
+                            "sunset": "Coucher du soleil",
+                            "twinkle": "Scintillement"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Aucun appareil trouv\u00e9 sur le r\u00e9seau"
+        },
+        "port_in_use": {
+            "message": "Le port {port} est d\u00e9j\u00e0 utilis\u00e9"
+        }
+    }
+}

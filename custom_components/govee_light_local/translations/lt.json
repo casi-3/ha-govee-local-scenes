@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Ar norite prad\u0117ti s\u0105rank\u0105?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Kv\u0117puoti",
+                            "candlelight": "\u017dvaki\u0173 \u0161viesa",
+                            "crossing": "Per\u0117jimas",
+                            "dating": "Pa\u017eintys",
+                            "energetic": "Energingas",
+                            "movie": "Filmas",
+                            "none": "N\u0117ra",
+                            "romantic": "Romanti\u0161kas",
+                            "snowflake": "Snaig\u0117",
+                            "sunrise": "Saul\u0117tekis",
+                            "sunset": "Saul\u0117lydis",
+                            "twinkle": "Twinkle"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Tinkle nerasta joki\u0173 prietais\u0173"
+        },
+        "port_in_use": {
+            "message": "Prievadas {port} jau naudojamas"
+        }
+    }
+}

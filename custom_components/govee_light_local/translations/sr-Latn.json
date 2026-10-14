@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Pokretanje pode\u0161avanja?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "Disanje",
+                            "candlelight": "Svetlost sve\u0107e",
+                            "crossing": "Preplitanje",
+                            "dating": "Upoznavanje",
+                            "energetic": "Energi\u010dno",
+                            "movie": "Film",
+                            "none": "Nijedan",
+                            "romantic": "Romanti\u010dno",
+                            "snowflake": "Sne\u017ena pahulja",
+                            "sunrise": "Izlazak Sunca",
+                            "sunset": "Zalazak sunca",
+                            "twinkle": "Svetlucanje"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "Nije prona\u0111en nijedan ure\u0111aj na mre\u017ei"
+        },
+        "port_in_use": {
+            "message": "Port {port} je ve\u0107 u upotrebi"
+        }
+    }
+}

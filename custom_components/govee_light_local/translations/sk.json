@@ -1,0 +1,41 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Chcete za\u010da\u0165 nastavova\u0165?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "breathe": "D\u00fdchanie",
+                            "candlelight": "Svie\u010dka",
+                            "crossing": "Prechod",
+                            "dating": "Zoznamka",
+                            "energetic": "Energick\u00fd",
+                            "movie": "Film",
+                            "none": "\u017diadne",
+                            "romantic": "Romantick\u00e9",
+                            "snowflake": "Snehov\u00e1 vlo\u010dka",
+                            "sunrise": "V\u00fdchod slnka",
+                            "sunset": "Z\u00e1pad slnka",
+                            "twinkle": "Trblietanie"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "V sieti sa nena\u0161li \u017eiadne zariadenia"
+        },
+        "port_in_use": {
+            "message": "Port {port} sa u\u017e pou\u017e\u00edva"
+        }
+    }
+}

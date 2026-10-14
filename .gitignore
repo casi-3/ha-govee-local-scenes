@@ -1,0 +1,4 @@
+__pycache__/
+.ruff_cache/
+/icon.png
+/icon@2x.png

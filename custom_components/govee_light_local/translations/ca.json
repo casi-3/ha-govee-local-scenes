@@ -1,0 +1,27 @@
+{
+    "config": {
+        "step": {
+            "confirm": {
+                "description": "Vols comen\u00e7ar la configuraci\u00f3?"
+            }
+        }
+    },
+    "entity": {
+        "light": {
+            "govee_light": {
+                "state_attributes": {
+                    "effect": {
+                        "state": {
+                            "sunset": "Posta de sol"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "no_devices_found": {
+            "message": "No s'han trobat dispositius a la xarxa"
+        }
+    }
+}

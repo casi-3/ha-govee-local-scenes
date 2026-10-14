@@ -1,0 +1,15 @@
+Govee Local Scenes
+Copyright 2026 casi-3
+
+This project contains a modified copy of the "govee_light_local" integration
+from Home Assistant Core (https://github.com/home-assistant/core),
+Copyright the Home Assistant authors, licensed under the Apache License 2.0.
+
+Modifications by casi-3:
+- added scene_library.py (scene catalog, LAN scene encoding)
+- light.py: effect list and effect handling use the scene catalog
+- manifest.json: custom integration metadata and version
+- catalogs/: bundled scene catalogs
+
+The scene packet encoding follows the description published in
+govee2mqtt (https://github.com/wez/govee2mqtt, MIT License).
