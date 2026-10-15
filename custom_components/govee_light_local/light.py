@@ -213,6 +213,8 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
                     self._attr_effect = effect
                     self._save_last_color_state()
                     if effect in self._local_effects:
+                        if not self.is_on:
+                            await self.coordinator.turn_on(self._device)
                         await self.hass.async_add_executor_job(
                             send_scene, self._device.ip, self._local_effects[effect]
                         )

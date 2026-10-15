@@ -17,6 +17,7 @@ CATALOG_URL = "https://app2.govee.com/appsku/v1/light-effect-libraries?sku={sku}
 CATALOG_HEADERS = {"AppVersion": "6.5.70", "User-Agent": "GoveeHome/6.5.70"}
 BUNDLED_DIR = Path(__file__).with_name("catalogs")
 CACHE_DIR = "govee_light_local_catalogs"
+CATALOG_VERSION = 2
 LAN_PORT = 4003
 
 CATEGORY_LABELS = {
@@ -40,10 +41,10 @@ def _finish(data: list[int]) -> bytes:
     return bytes(data) + bytes(19 - len(data)) + bytes([checksum])
 
 
-def scene_packets(code: int, param: str | None) -> list[bytes]:
+def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
     lines: list[bytes] = []
     if param:
-        data = [0xA3, 0x00, 0x01, 0x00, 0x02]
+        data = [0xA3, 0x00, 0x01, 0x00, scene_type & 0xFF]
         count = 0
         marker = 1
         for byte in base64.b64decode(param):
@@ -62,7 +63,7 @@ def scene_packets(code: int, param: str | None) -> list[bytes]:
 
 
 def send_scene(ip: str, scene: dict[str, Any]) -> None:
-    lines = scene_packets(scene["code"], scene.get("param"))
+    lines = scene_packets(scene["code"], scene.get("param"), scene.get("type", 0))
     message = {
         "msg": {
             "cmd": "ptReal",
@@ -87,9 +88,10 @@ def parse_library(sku: str, payload: dict[str, Any]) -> dict[str, Any]:
                     "name": scene.get("sceneName", str(code)),
                     "code": int(code),
                     "param": effect.get("scenceParam") or None,
+                    "type": int(effect.get("sceneType") or 0),
                 }
             )
-    return {"sku": sku, "scenes": scenes}
+    return {"sku": sku, "version": CATALOG_VERSION, "scenes": scenes}
 
 
 def effect_names(catalog: dict[str, Any], language: str) -> dict[str, dict[str, Any]]:
@@ -127,11 +129,11 @@ class SceneLibrary:
     def _load(self, sku: str) -> dict[str, Any] | None:
         for path in (BUNDLED_DIR / f"{sku}.json", self._cache_dir / f"{sku}.json"):
             if path.is_file():
-                return json.loads(path.read_text(encoding="utf-8"))
+                catalog = json.loads(path.read_text(encoding="utf-8"))
+                if catalog.get("version") == CATALOG_VERSION:
+                    return catalog
         try:
-            request = urllib.request.Request(
-                CATALOG_URL.format(sku=sku), headers=CATALOG_HEADERS
-            )
+            request = urllib.request.Request(CATALOG_URL.format(sku=sku), headers=CATALOG_HEADERS)
             with urllib.request.urlopen(request, timeout=15) as response:
                 catalog = parse_library(sku, json.loads(response.read()))
         except (OSError, ValueError) as err:

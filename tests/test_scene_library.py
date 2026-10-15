@@ -33,17 +33,25 @@ def as_hex(lines):
 
 class ScenePacketTests(unittest.TestCase):
     def test_scene_with_parameters_matches_reference(self):
-        self.assertEqual(as_hex(scene_library.scene_packets(212, FOREST_PARAM)), FOREST_EXPECTED)
+        self.assertEqual(as_hex(scene_library.scene_packets(212, FOREST_PARAM, 2)), FOREST_EXPECTED)
 
     def test_builtin_scene_is_a_single_packet(self):
-        lines = scene_library.scene_packets(22, None)
+        lines = scene_library.scene_packets(22, None, 0)
         self.assertEqual(len(lines), 1)
         self.assertEqual(
             as_hex(lines), "33 05 04 16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 24"
         )
 
+    def test_header_carries_the_scene_type(self):
+        lines = scene_library.scene_packets(2658, "gwH/yP8oAAL/AAD/fwA=", 1)
+        self.assertEqual(
+            as_hex(lines),
+            "a3 ff 01 01 01 83 01 ff c8 ff 28 00 02 ff 00 00 ff 7f 00 42\n"
+            "33 05 04 62 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5a",
+        )
+
     def test_every_packet_is_twenty_bytes(self):
-        for line in scene_library.scene_packets(212, FOREST_PARAM):
+        for line in scene_library.scene_packets(212, FOREST_PARAM, 2):
             self.assertEqual(len(line), 20)
 
 
@@ -78,6 +86,7 @@ class CatalogTests(unittest.TestCase):
         catalog = scene_library.parse_library("H0000", self.payload)
         self.assertEqual([s["name"] for s in catalog["scenes"]], ["Movie", "Rainbow"])
         self.assertIsNone(catalog["scenes"][1]["param"])
+        self.assertEqual(catalog["version"], scene_library.CATALOG_VERSION)
 
     def test_effect_names_are_grouped_and_translated(self):
         catalog = scene_library.parse_library("H0000", self.payload)
@@ -107,6 +116,8 @@ class CatalogTests(unittest.TestCase):
         )
         self.assertEqual(bundled["sku"], "H6076")
         self.assertEqual(len(bundled["scenes"]), 108)
+        self.assertEqual(bundled["version"], scene_library.CATALOG_VERSION)
+        self.assertTrue(all("type" in scene for scene in bundled["scenes"]))
         self.assertIn("Natural · Rainbow", scene_library.effect_names(bundled, "en"))
 
 
