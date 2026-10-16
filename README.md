@@ -95,6 +95,7 @@ If no catalog can be found, the light keeps the scenes of the built-in integrati
 ## 🚧 Limitations
 
 - Tested on the Floor Lamp Basic (H6076). Other models with LAN control should work the same way, feedback is welcome.
+- H60A6 firmware 1.00.41: the device-specific A3/A4 scene encoding matches a working BLE reference, but the tested LAN `ptReal` routes did not execute it. The encoding correction does not establish native LAN scene support for this model.
 - Music mode and DIY scenes are not supported.
 - The current scene is not read back from the light: if you change it in the Govee app, Home Assistant still shows the last scene it sent.
 - This is a snapshot of the built-in integration from Home Assistant 2026.10. Updates to the built-in version are not applied automatically.

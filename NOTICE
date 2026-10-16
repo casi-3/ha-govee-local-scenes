@@ -13,3 +13,9 @@ Modifications by casi-3:
 
 The scene packet encoding follows the description published in
 govee2mqtt (https://github.com/wez/govee2mqtt, MIT License).
+
+The H60A6-specific A3/A4 framing is based on the app-derived implementation in
+govee-ble-local (https://github.com/Brady-Woods/govee-ble-local),
+Copyright (c) 2026 Brady Woods, licensed under the MIT License.
+Its copyright and permission notice are reproduced in
+LICENSES/govee-ble-local-MIT.txt.

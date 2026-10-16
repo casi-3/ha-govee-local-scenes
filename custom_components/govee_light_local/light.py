@@ -216,7 +216,10 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
                         if not self.is_on:
                             await self.coordinator.turn_on(self._device)
                         await self.hass.async_add_executor_job(
-                            send_scene, self._device.ip, self._local_effects[effect]
+                            send_scene,
+                            self._device.ip,
+                            self._local_effects[effect],
+                            self._device.sku,
                         )
                     else:
                         await self.coordinator.set_scene(self._device, effect)
@@ -254,9 +257,7 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         self._last_color_state = (
             color_mode,
             self.brightness,
-            (self.color_temp_kelvin,)
-            if color_mode == ColorMode.COLOR_TEMP
-            else self.rgb_color,
+            (self.color_temp_kelvin,) if color_mode == ColorMode.COLOR_TEMP else self.rgb_color,
         )
 
     async def _restore_last_color_state(self) -> None:

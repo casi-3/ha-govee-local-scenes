@@ -41,9 +41,56 @@ def _finish(data: list[int]) -> bytes:
     return bytes(data) + bytes(19 - len(data)) + bytes([checksum])
 
 
-def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
+def _h60a6_upload(param: str) -> list[bytes]:
+    """H60A6 type-5 value framing; not a guarantee of LAN execution.
+
+    App-derived B_h60a6 dialect, compared against govee-ble-local 1.2.1.
+    See the accompanying MIT attribution for the reference framing.
+    """
+    raw = base64.b64decode(param, validate=True)
+    if len(raw) < 3 or raw[0] != 0x50:
+        raise ValueError("Unsupported H60A6 type-5 parameter header")
+    value = raw[1:]
+    is_diy = int.from_bytes(value[:2], "little") + 2 == len(value)
+    if is_diy:
+        count = (3 + len(value) + 16) // 17
+        if count > 255:
+            raise ValueError("H60A6 DIY parameter exceeds A3 packet count")
+        stream = bytes([0x01, count, 0x58]) + value
+        return [
+            _finish([0xA3, 0xFF if i == count - 1 else i, *stream[i * 17 : (i + 1) * 17]])
+            for i in range(count)
+        ]
+    if value[0] != 0x20:
+        raise ValueError("Unsupported H60A6 graffiti parameter format")
+
+    # A4 MTU=20: exact-length START/MIDDLE/END, no fixed-frame padding.
+    def finish_exact(body: bytes) -> bytes:
+        checksum = 0
+        for byte in body:
+            checksum ^= byte
+        return body + bytes([checksum])
+
+    chunks = [value[i : i + 16] for i in range(12, len(value), 16)]
+    count = 1 + max(1, len(chunks))
+    if count > 65535:
+        raise ValueError("H60A6 graffiti parameter exceeds A4 packet count")
+    lines = [finish_exact(bytes([0xA4, 0, 0, 1, count & 0xFF, count >> 8, 0x58]) + value[:12])]
+    if not chunks:
+        return [*lines, finish_exact(bytes([0xA4, 0xFF, 0xFF]))]
+    for i, chunk in enumerate(chunks):
+        seq = 0xFFFF if i == len(chunks) - 1 else i + 1
+        lines.append(finish_exact(bytes([0xA4, seq & 0xFF, seq >> 8]) + chunk))
+    return lines
+
+
+def scene_packets(
+    code: int, param: str | None, scene_type: int, sku: str | None = None
+) -> list[bytes]:
     lines: list[bytes] = []
-    if param:
+    if param and scene_type == 5 and (sku or "").upper() == "H60A6":
+        lines.extend(_h60a6_upload(param))
+    elif param:
         data = [0xA3, 0x00, 0x01, 0x00, scene_type & 0xFF]
         count = 0
         marker = 1
@@ -62,8 +109,8 @@ def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
     return lines
 
 
-def send_scene(ip: str, scene: dict[str, Any]) -> None:
-    lines = scene_packets(scene["code"], scene.get("param"), scene.get("type", 0))
+def send_scene(ip: str, scene: dict[str, Any], sku: str | None = None) -> None:
+    lines = scene_packets(scene["code"], scene.get("param"), scene.get("type", 0), sku)
     message = {
         "msg": {
             "cmd": "ptReal",

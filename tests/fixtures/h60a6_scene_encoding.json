@@ -1,0 +1,53 @@
+{
+  "source": "Independent govee-ble-local1.2.1 reference serialization; catalog params match public API; no LAN acceptance claim",
+  "scenes": [
+    {
+      "category": "Natural",
+      "name": "Graffiti",
+      "code": 19076,
+      "param": "UFQAAgEAAP9BJQABZABkMjICAAAAAGRkAQEH/wAA/38A//8AAP8AAAD/AP//iwD/JQABZAAyMjICAAAAAGRkAQEHiwD/AP//AAD/AP8A//8A/38A/wAA",
+      "type": 5,
+      "expected_hex": [
+        "a300010658540002010000ff4125000164006431",
+        "a301323202000000006464010107ff0000ff7fd8",
+        "a30200ffff0000ff000000ff00ffff8b00ff25f0",
+        "a3030001640032323202000000006464010107f2",
+        "a3048b00ff00ffff0000ff00ff00ffff00ff7f53",
+        "a3ff00ff000000000000000000000000000000a3",
+        "330504844a0000000000000000000000000000fc"
+      ]
+    },
+    {
+      "category": "Natural",
+      "name": "Aurora",
+      "code": 19074,
+      "param": "UCAA/wAMAAGyAAOlAAYAGgAAAP8CCRQVFi8wMUFCQ1ZXWGJjZHFyc3h5eoGCgx4AAKfVAQoPEBESEzIzNDU2PD0+P0BZWltcXV5fYGF0dXZ3GwAA/mwDCBcYGSwtLkRFRlNUVWVmZ25vcHt8fX5/gIQKAAD/AAUGHyAhIiMkJSYeAAD/TwQHGhscHR4nKCkqK0dISUpLTE1OT1BRUmhpamtsbQoAAP/SAAsMDQ43ODk6OwIAZAEQJwAAAAA=",
+      "type": 5,
+      "expected_hex": [
+        "a40000010c00582000ff000c0001b20003a50037",
+        "a4010006001a000000ff02091415162f30314135",
+        "a40200424356575862636471727378797a818293",
+        "a40300831e0000a7d5010a0f1011121332333479",
+        "a4040035363c3d3e3f40595a5b5c5d5e5f6061ba",
+        "a40500747576771b0000fe6c03081718192c2d34",
+        "a406002e4445465354556566676e6f707b7c7df6",
+        "a407007e7f80840a0000ff0005061f202122234f",
+        "a408002425261e0000ff4f04071a1b1c1d1e271f",
+        "a4090028292a2b4748494a4b4c4d4e4f505152b9",
+        "a40a0068696a6b6c6d0a0000ffd2000b0c0d0e8c",
+        "a4ffff3738393a3b02006401102700000000c3",
+        "330504824a0000000000000000000000000000fa"
+      ]
+    },
+    {
+      "category": "Life",
+      "name": "White Light",
+      "code": 99,
+      "param": null,
+      "type": 0,
+      "expected_hex": [
+        "3305046300000000000000000000000000000051"
+      ]
+    }
+  ]
+}
