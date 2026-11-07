@@ -42,13 +42,33 @@ class ScenePacketTests(unittest.TestCase):
             as_hex(lines), "33 05 04 16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 24"
         )
 
-    def test_header_carries_the_scene_type(self):
+    def test_short_payload_ends_with_an_empty_closing_frame(self):
         lines = scene_library.scene_packets(2658, "gwH/yP8oAAL/AAD/fwA=", 1)
         self.assertEqual(
             as_hex(lines),
-            "a3 ff 01 01 01 83 01 ff c8 ff 28 00 02 ff 00 00 ff 7f 00 42\n"
+            "a3 00 01 02 01 83 01 ff c8 ff 28 00 02 ff 00 00 ff 7f 00 be\n"
+            "a3 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5c\n"
             "33 05 04 62 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5a",
         )
+
+    def test_compose_scenes_use_header_0a(self):
+        lines = scene_library.scene_packets(2381, FOREST_PARAM, 6)
+        self.assertEqual(lines[0][4], 0x0A)
+        self.assertEqual(
+            [line[5:-1] for line in lines[:-1]],
+            [line[5:-1] for line in scene_library.scene_packets(2381, FOREST_PARAM, 2)[:-1]],
+        )
+
+    def test_graffiti_scenes_drop_the_two_byte_prefix(self):
+        lines = scene_library.scene_packets(5, "AQIDBAU=", 3)
+        self.assertEqual(lines[0][4], 0x07)
+        self.assertEqual(list(lines[0][5:8]), [3, 4, 5])
+
+    def test_static_and_unknown_scenes_only_send_the_activation(self):
+        for scene_type in (0, 9):
+            lines = scene_library.scene_packets(22, "AQID", scene_type)
+            self.assertEqual(len(lines), 1)
+            self.assertEqual(lines[0][:3], bytes([0x33, 0x05, 0x04]))
 
     def test_every_packet_is_twenty_bytes(self):
         for line in scene_library.scene_packets(212, FOREST_PARAM, 2):

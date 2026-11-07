@@ -19,6 +19,10 @@ BUNDLED_DIR = Path(__file__).with_name("catalogs")
 CACHE_DIR = "govee_light_local_catalogs"
 CATALOG_VERSION = 2
 LAN_PORT = 4003
+FIRST_CAPACITY = 14
+NEXT_CAPACITY = 17
+GRAFFITI_SCENE = 3
+SCENE_HEADERS = {1: 0x01, 2: 0x02, 3: 0x07, 4: 0x04, 5: 0x0A, 6: 0x0A}
 
 CATEGORY_LABELS = {
     "fr": {
@@ -41,23 +45,25 @@ def _finish(data: list[int]) -> bytes:
     return bytes(data) + bytes(19 - len(data)) + bytes([checksum])
 
 
+def _multi_frames(header: int, payload: bytes) -> list[bytes]:
+    first = [0xA3, 0x00, 0x01, 0x00, header, *payload[:FIRST_CAPACITY]]
+    rest = payload[FIRST_CAPACITY:]
+    chunks = [rest[start : start + NEXT_CAPACITY] for start in range(0, len(rest), NEXT_CAPACITY)]
+    frames = [first]
+    frames.extend([0xA3, index, *chunk] for index, chunk in enumerate(chunks[:-1], start=1))
+    frames.append([0xA3, 0xFF, *(chunks[-1] if chunks else b"")])
+    first[3] = len(frames)
+    return [_finish(frame) for frame in frames]
+
+
 def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
     lines: list[bytes] = []
-    if param:
-        data = [0xA3, 0x00, 0x01, 0x00, scene_type & 0xFF]
-        count = 0
-        marker = 1
-        for byte in base64.b64decode(param):
-            if len(data) % 19 == 0:
-                count += 1
-                data.append(0xA3)
-                marker = len(data)
-                data.append(count)
-            data.append(byte)
-        data[marker] = 0xFF
-        data[3] = count + 1
-        for start in range(0, len(data), 19):
-            lines.append(_finish(data[start : start + 19]))
+    payload = base64.b64decode(param) if param else b""
+    header = SCENE_HEADERS.get(scene_type)
+    if payload and header is not None:
+        if scene_type == GRAFFITI_SCENE and len(payload) > 2:
+            payload = payload[2:]
+        lines = _multi_frames(header, payload)
     lines.append(_finish([0x33, 0x05, 0x04, code & 0xFF, (code >> 8) & 0xFF]))
     return lines
 
