@@ -191,7 +191,24 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
             brightness: int = int((float(kwargs[ATTR_BRIGHTNESS]) / 255.0) * 100.0)
             await self.coordinator.set_brightness(self._device, brightness)
 
-        if ATTR_RGB_COLOR in kwargs:
+        effect = kwargs.get(ATTR_EFFECT)
+        if (
+            effect
+            and effect != _NONE_SCENE
+            and self._attr_effect_list
+            and effect in self._attr_effect_list
+        ):
+            self._attr_effect = effect
+            self._save_last_color_state()
+            if effect in self._local_effects:
+                if not self.is_on:
+                    await self.coordinator.turn_on(self._device)
+                await self.hass.async_add_executor_job(
+                    send_scene, self._device.ip, self._local_effects[effect]
+                )
+            else:
+                await self.coordinator.set_scene(self._device, effect)
+        elif ATTR_RGB_COLOR in kwargs:
             self._attr_color_mode = ColorMode.RGB
             self._attr_effect = None
             self._last_color_state = None
@@ -203,23 +220,9 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
             self._last_color_state = None
             temperature: float = kwargs[ATTR_COLOR_TEMP_KELVIN]
             await self.coordinator.set_temperature(self._device, int(temperature))
-        elif ATTR_EFFECT in kwargs:
-            effect = kwargs[ATTR_EFFECT]
-            if effect and self._attr_effect_list and effect in self._attr_effect_list:
-                if effect == _NONE_SCENE:
-                    self._attr_effect = None
-                    await self._restore_last_color_state()
-                else:
-                    self._attr_effect = effect
-                    self._save_last_color_state()
-                    if effect in self._local_effects:
-                        if not self.is_on:
-                            await self.coordinator.turn_on(self._device)
-                        await self.hass.async_add_executor_job(
-                            send_scene, self._device.ip, self._local_effects[effect]
-                        )
-                    else:
-                        await self.coordinator.set_scene(self._device, effect)
+        elif effect == _NONE_SCENE and self._attr_effect_list:
+            self._attr_effect = None
+            await self._restore_last_color_state()
 
         if not self.is_on or not kwargs:
             await self.coordinator.turn_on(self._device)

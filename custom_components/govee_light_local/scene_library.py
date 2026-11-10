@@ -19,7 +19,7 @@ BUNDLED_DIR = Path(__file__).with_name("catalogs")
 CACHE_DIR = "govee_light_local_catalogs"
 CATALOG_VERSION = 2
 LAN_PORT = 4003
-FIRST_CAPACITY = 14
+FIRST_CAPACITY = 15
 NEXT_CAPACITY = 17
 GRAFFITI_SCENE = 3
 SCENE_HEADERS = {1: 0x01, 2: 0x02, 3: 0x07, 4: 0x04, 5: 0x0A, 6: 0x0A}
@@ -45,9 +45,10 @@ def _finish(data: list[int]) -> bytes:
     return bytes(data) + bytes(19 - len(data)) + bytes([checksum])
 
 
-def _multi_frames(header: int, payload: bytes) -> list[bytes]:
-    first = [0xA3, 0x00, 0x01, 0x00, header, *payload[:FIRST_CAPACITY]]
-    rest = payload[FIRST_CAPACITY:]
+def _multi_frames(header: list[int], payload: bytes) -> list[bytes]:
+    capacity = FIRST_CAPACITY - len(header)
+    first = [0xA3, 0x00, 0x01, 0x00, *header, *payload[:capacity]]
+    rest = payload[capacity:]
     chunks = [rest[start : start + NEXT_CAPACITY] for start in range(0, len(rest), NEXT_CAPACITY)]
     frames = [first]
     frames.extend([0xA3, index, *chunk] for index, chunk in enumerate(chunks[:-1], start=1))
@@ -63,7 +64,8 @@ def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
     if payload and header is not None:
         if scene_type == GRAFFITI_SCENE and len(payload) > 2:
             payload = payload[2:]
-        lines = _multi_frames(header, payload)
+        prefix = [] if header == 0x0A and payload[0] == 0x0A else [header]
+        lines = _multi_frames(prefix, payload)
     lines.append(_finish([0x33, 0x05, 0x04, code & 0xFF, (code >> 8) & 0xFF]))
     return lines
 

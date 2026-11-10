@@ -1,3 +1,4 @@
+import base64
 import importlib.util
 from pathlib import Path
 from typing import ClassVar
@@ -58,6 +59,14 @@ class ScenePacketTests(unittest.TestCase):
             [line[5:-1] for line in lines[:-1]],
             [line[5:-1] for line in scene_library.scene_packets(2381, FOREST_PARAM, 2)[:-1]],
         )
+
+    def test_compose_payload_already_carrying_0a_is_sent_as_is(self):
+        payload = bytes([0x0A, 0x02]) + bytes(range(1, 31))
+        lines = scene_library.scene_packets(2386, base64.b64encode(payload).decode(), 6)
+        self.assertEqual(list(lines[0][:6]), [0xA3, 0x00, 0x01, 0x02, 0x0A, 0x02])
+        self.assertEqual(lines[0][4:19], payload[:15])
+        self.assertEqual(lines[1][:2], bytes([0xA3, 0xFF]))
+        self.assertEqual(lines[1][2:19], payload[15:32])
 
     def test_graffiti_scenes_drop_the_two_byte_prefix(self):
         lines = scene_library.scene_packets(5, "AQIDBAU=", 3)
