@@ -92,9 +92,20 @@ Catalogs are looked up in this order:
 
 If no catalog can be found, the light keeps the scenes of the built-in integration.
 
+## ✅ Confirmed models
+
+| Model | Confirmed by |
+| --- | --- |
+| H6076 | [casi-3](https://github.com/casi-3) |
+| H610A | [Shmo-jo](https://github.com/Shmo-jo) |
+| H6159 | [Shmo-jo](https://github.com/Shmo-jo) |
+| H706C | [rafitigay](https://github.com/rafitigay) |
+| H8066 | [Shmo-jo](https://github.com/Shmo-jo) |
+
+Thanks to everyone who took the time to test their lights and report back. Other models with LAN control should work the same way: if yours works (or not), please [open an issue](https://github.com/casi-3/ha-govee-local-scenes/issues) and it will be added here.
+
 ## 🚧 Limitations
 
-- Tested on the Floor Lamp Basic (H6076). Other models with LAN control should work the same way, feedback is welcome.
 - Music mode and DIY scenes are not supported.
 - The current scene is not read back from the light: if you change it in the Govee app, Home Assistant still shows the last scene it sent.
 - This is a snapshot of the built-in integration from Home Assistant 2026.10. Updates to the built-in version are not applied automatically.
