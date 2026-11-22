@@ -96,6 +96,7 @@ If no catalog can be found, the light keeps the scenes of the built-in integrati
 
 | Model | Confirmed by |
 | --- | --- |
+| H3A53 | [Shmo-jo](https://github.com/Shmo-jo) |
 | H6076 | [casi-3](https://github.com/casi-3) |
 | H610A | [Shmo-jo](https://github.com/Shmo-jo) |
 | H6159 | [Shmo-jo](https://github.com/Shmo-jo) |
