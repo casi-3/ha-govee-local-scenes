@@ -26,7 +26,7 @@
 > [!TIP]
 > **New in the 1.1 beta: paint your lights and preview every effect.**
 > Paint segments by hand, save your own patterns and browse all scenes with an animated preview, right from the light dialog in Home Assistant.
-> To try it, turn on the **Pre-release** switch of this repository in HACS (Settings > Devices & services > HACS, then the device of this repository), and install the **1.1.0b1** update. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
+> To try it, open the device of this repository in the **Marketplace** (HACS on Home Assistant versions before 2026.11), enable its **Pre-release** entity (it is disabled by default), turn it on and install the **1.1.0b1** update. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
 
 ## ✨ Highlights
 
