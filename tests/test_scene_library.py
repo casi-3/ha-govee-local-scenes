@@ -32,6 +32,22 @@ AURORA_FRAMES = """a3 00 01 02 58 01 00 00 13 39 00 00 14 00 03 01 01 00 03 c7
 a3 ff 00 ff 31 00 ff d6 00 ff 00 00 00 00 00 00 00 00 00 44
 33 05 04 4d 1f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 60"""
 
+FIREFLY_PARAM = (
+    "QQBbJDIAAxgAAwoAAQXj5RYOF05VdTxQAAAC//8AAAAAFwADCQABBL/SAA4iYWg3MgcAAf//"
+    "AAAAABYAAwgAAQP/0gAfSV9LWgQAAf//AAAAAA=="
+)
+FIREFLY_FRAMES = """a3 00 01 05 58 5a 00 5b 24 32 00 03 18 00 03 0a 00 01 05 fe
+a3 01 e3 e5 16 0e 17 4e 55 75 3c 50 00 00 02 ff ff 00 00 ab
+a3 02 00 00 17 00 03 09 00 01 04 bf d2 00 0e 22 61 68 37 c6
+a3 03 32 07 00 01 ff ff 00 00 00 00 16 00 03 08 00 01 03 8b
+a3 ff ff d2 00 1f 49 5f 4b 5a 04 00 01 ff ff 00 00 00 00 6c
+33 05 04 24 21 00 00 00 00 00 00 00 00 00 00 00 00 00 00 37"""
+
+BREATHE_PARAM = "AAUAIxgAlhTd3wDj5Rb/qwD3eXbYg/+TNv06hv8="
+BREATHE_FRAMES = """a3 00 01 02 04 05 00 23 18 00 96 14 dd df 00 e3 e5 16 ff f5
+a3 ff ab 00 f7 79 76 d8 83 ff 93 36 fd 3a 86 ff 00 00 00 b0
+33 05 04 39 21 00 00 00 00 00 00 00 00 00 00 00 00 00 00 2a"""
+
 
 def as_hex(lines):
     return "\n".join(" ".join(f"{b:02x}" for b in line) for line in lines)
@@ -76,6 +92,14 @@ class ScenePacketTests(unittest.TestCase):
     def test_diy_scenes_replace_the_first_byte_with_58(self):
         lines = scene_library.scene_packets(8013, AURORA_PARAM, 5)
         self.assertEqual(as_hex(lines), AURORA_FRAMES)
+
+    def test_diy_scenes_starting_with_41_get_58_5a(self):
+        lines = scene_library.scene_packets(8484, FIREFLY_PARAM, 5)
+        self.assertEqual(as_hex(lines), FIREFLY_FRAMES)
+
+    def test_diy_scenes_starting_with_00_get_04(self):
+        lines = scene_library.scene_packets(8505, BREATHE_PARAM, 5)
+        self.assertEqual(as_hex(lines), BREATHE_FRAMES)
 
     def test_graffiti_scenes_drop_the_two_byte_prefix(self):
         lines = scene_library.scene_packets(5, "AQIDBAU=", 3)
