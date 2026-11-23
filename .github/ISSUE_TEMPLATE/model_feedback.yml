@@ -1,0 +1,69 @@
+name: Model feedback
+description: Tell us whether your Govee model works with this integration
+title: "Model feedback: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! Every report helps other people know which lights work. Working models are added to the **Confirmed models** table of the README, with credit to you.
+        Please do not paste personal data (IP addresses, MAC addresses, room names).
+  - type: input
+    id: model
+    attributes:
+      label: Model (SKU)
+      description: Shown in the Govee Home app under device settings, or on the box. It starts with H.
+      placeholder: H61D5
+    validations:
+      required: true
+  - type: input
+    id: product
+    attributes:
+      label: Product name
+      placeholder: Neon Rope Light 2
+  - type: dropdown
+    id: result
+    attributes:
+      label: Does it work?
+      options:
+        - Yes, everything I tried works
+        - Partly, some things do not work
+        - No, it does not work
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Integration version
+      description: Shown in HACS.
+      placeholder: 1.0.4 or 1.1.0b1
+    validations:
+      required: true
+  - type: checkboxes
+    id: tried
+    attributes:
+      label: What did you try?
+      options:
+        - label: Picking scenes in the Effect menu
+        - label: Switching from one scene to another
+        - label: Scenes or automations in Home Assistant that set an effect
+        - label: "1.1 beta: painting segments"
+        - label: "1.1 beta: the Effects tab and its previews"
+        - label: "1.1 beta: saving and applying a pattern"
+  - type: input
+    id: segments
+    attributes:
+      label: Number of segments (1.1 beta)
+      description: The number that matches your light in the editor, if you tried painting.
+      placeholder: "14"
+  - type: textarea
+    id: details
+    attributes:
+      label: What worked and what did not
+      description: Scene names that fail, what the light does instead (nothing, wrong colors, flicker, freezes), anything that helps.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs (optional)
+      description: In Settings > System > Logs, open the menu, choose Show raw logs and paste the lines that contain govee_light_local.
+      render: text

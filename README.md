@@ -23,6 +23,11 @@
   <img src="docs/images/demo.gif" alt="Picking a scene in Home Assistant lights up the Govee lamp" width="540">
 </p>
 
+> [!TIP]
+> **New in the 1.1 beta: paint your lights and preview every effect.**
+> Paint segments by hand, save your own patterns and browse all scenes with an animated preview, right from the light dialog in Home Assistant.
+> To try it, turn on the **Pre-release** switch of this repository in HACS (Settings > Devices & services > HACS, then the device of this repository), and install the **1.1.0b1** update. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
+
 ## ✨ Highlights
 
 - 🌈 **All the scenes**: the built-in Govee lights local integration only knows a handful of scenes per model. This version fills the Effect menu with the full scene catalog of your device, the same one the Govee Home app shows (108 scenes on a Floor Lamp Basic H6076).
@@ -104,7 +109,7 @@ If no catalog can be found, the light keeps the scenes of the built-in integrati
 | H706C | [rafitigay](https://github.com/rafitigay) |
 | H8066 | [Shmo-jo](https://github.com/Shmo-jo) |
 
-Thanks to everyone who took the time to test their lights and report back. Other models with LAN control should work the same way: if yours works (or not), please [open an issue](https://github.com/casi-3/ha-govee-local-scenes/issues) and it will be added here.
+Thanks to everyone who took the time to test their lights and report back. Other models with LAN control should work the same way. If your model is not listed, whether it works or not, please fill in a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml): it takes a minute and working models are added here with credit to you.
 
 ## 🚧 Limitations
 
