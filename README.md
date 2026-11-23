@@ -23,10 +23,8 @@
   <img src="docs/images/demo.gif" alt="Picking a scene in Home Assistant lights up the Govee lamp" width="540">
 </p>
 
-> [!TIP]
-> **New in the 1.1 beta: paint your lights and preview every effect.**
-> Paint segments by hand, save your own patterns and browse all scenes with an animated preview, right from the light dialog in Home Assistant.
-> To try it, turn on the **Pre-release** switch of this repository in HACS (Settings > Devices & services > HACS, then the device of this repository), and install the **1.1.0b1** update. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
+> [!NOTE]
+> You are reading the **1.1 beta**. It adds segment painting, saved patterns and animated effect previews. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
 
 ## ✨ Highlights
 
@@ -34,6 +32,7 @@
 - 🏠 **Local control**: scenes are sent straight to the light over the LAN API. No Govee account, no API key, no cloud round trip when you switch scenes.
 - 🔁 **Drop-in replacement**: same domain, same config entry, same entities. Your automations, dashboards and entity ids stay as they are.
 - 🧩 **Works with any model**: the catalog of the H6076 is bundled. For other models it is downloaded once from Govee's public scene library and kept on disk, after that everything stays local.
+- 🖌️ **Paint and effects** (beta): paint each segment by hand, save your own patterns and browse every scene with an animated preview, right from the light dialog.
 - 🧱 **No extra dependency**: it uses the same `govee-local-api` package as Home Assistant itself.
 
 ## 📦 Installation
@@ -85,6 +84,35 @@ data:
 
 Categories follow the language of your Home Assistant instance when a translation exists (French for now), English otherwise. If a scene name appears twice in the same category, the scene code is added in parentheses.
 
+## 🖌️ Paint and effects (beta)
+
+<p align="center">
+  <img src="docs/images/paint-and-effects.png" alt="Paint and effects button in the light dialog, the paint editor and the effect browser" width="900">
+</p>
+
+Open any Govee light and tap **Paint and effects**, next to the Effect menu. The editor opens in a sheet with two tabs:
+
+- **Paint**: pick a color and tap or drag over the segments, the light follows live. Fill all, Gradient (two colors, blended from start to end) and Clear do what they say, the eraser clears a segment. The number of segments can be adjusted with the − and + buttons.
+- **Effects**: every scene of the light, with search and categories. Each tile plays an animated preview built from the scene data, and tapping it starts the scene on the light. The preview is an approximation: the light computes the real animation itself.
+
+**Patterns**: tap **Save this pattern** to keep a drawing. Saved patterns are shared by all your Govee lights and appear in the regular **Effect** menu as `My patterns · Name`, so they work in scenes, automations and voice assistants like any other effect. A pattern applied to a light with a different number of segments is stretched to fit.
+
+The same editor is also available on a **Govee** page in the sidebar. It can be hidden in **Settings > Devices & services > Govee lights local > Configure**.
+
+### Actions
+
+```yaml
+action: govee_light_local.set_segments
+target:
+  entity_id: light.neon_rope
+data:
+  colors: ["#ff2d20", "#ff8a00", "#ffd60a", null, "#0a84ff"]
+```
+
+Colors are given from the start of the light, one per segment, `null` turns a segment off. Also available: `govee_light_local.save_segment_pattern`, `govee_light_local.delete_segment_pattern` and `govee_light_local.set_segment_count`.
+
+Lights do not report how many segments they have. Known models get the right count automatically (H61D5: 14), other lights start at 15 and can be adjusted in the editor.
+
 ## ⚙️ How it works
 
 Govee publishes the scene catalog of each model in a public library used by its app. Each scene comes with a code and, for animated scenes, a parameter block. The integration turns that into the `ptReal` packets the light understands and sends them over UDP to port 4003, exactly like the app does on the local network.
@@ -114,6 +142,8 @@ Thanks to everyone who took the time to test their lights and report back. Other
 ## 🚧 Limitations
 
 - Music mode and DIY scenes are not supported.
+- The **Paint and effects** button is added to the light dialog by a small script, because Home Assistant has no official way for an integration to extend that dialog. A future frontend update may hide it until the integration is updated. The Govee page in the sidebar keeps working either way.
+- Effect previews are approximate, and the colors of some scenes are guessed from their data.
 - The current scene is not read back from the light: if you change it in the Govee app, Home Assistant still shows the last scene it sent.
 - This is a snapshot of the built-in integration from Home Assistant 2026.10. Updates to the built-in version are not applied automatically.
 
