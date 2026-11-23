@@ -27,6 +27,11 @@ a3 05 01 ff 05 01 c8 14 14 02 ee 14 01 00 ff 00 00 00 00 92
 a3 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5c
 33 05 04 d4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 e6"""
 
+AURORA_PARAM = "LgEAABM5AAAUAAMBAQADAP8xAP/WAP8A"
+AURORA_FRAMES = """a3 00 01 02 58 01 00 00 13 39 00 00 14 00 03 01 01 00 03 c7
+a3 ff 00 ff 31 00 ff d6 00 ff 00 00 00 00 00 00 00 00 00 44
+33 05 04 4d 1f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 60"""
+
 
 def as_hex(lines):
     return "\n".join(" ".join(f"{b:02x}" for b in line) for line in lines)
@@ -67,6 +72,10 @@ class ScenePacketTests(unittest.TestCase):
         self.assertEqual(lines[0][4:19], payload[:15])
         self.assertEqual(lines[1][:2], bytes([0xA3, 0xFF]))
         self.assertEqual(lines[1][2:19], payload[15:32])
+
+    def test_diy_scenes_replace_the_first_byte_with_58(self):
+        lines = scene_library.scene_packets(8013, AURORA_PARAM, 5)
+        self.assertEqual(as_hex(lines), AURORA_FRAMES)
 
     def test_graffiti_scenes_drop_the_two_byte_prefix(self):
         lines = scene_library.scene_packets(5, "AQIDBAU=", 3)

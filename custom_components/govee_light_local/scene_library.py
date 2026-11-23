@@ -22,7 +22,8 @@ LAN_PORT = 4003
 FIRST_CAPACITY = 15
 NEXT_CAPACITY = 17
 GRAFFITI_SCENE = 3
-SCENE_HEADERS = {1: 0x01, 2: 0x02, 3: 0x07, 4: 0x04, 5: 0x0A, 6: 0x0A}
+DIY_SCENE = 5
+SCENE_HEADERS = {1: 0x01, 2: 0x02, 3: 0x07, 4: 0x04, 5: 0x58, 6: 0x0A}
 
 CATEGORY_LABELS = {
     "fr": {
@@ -64,6 +65,8 @@ def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
     if payload and header is not None:
         if scene_type == GRAFFITI_SCENE and len(payload) > 2:
             payload = payload[2:]
+        if scene_type == DIY_SCENE:
+            payload = payload[1:]
         prefix = [] if header == 0x0A and payload[0] == 0x0A else [header]
         lines = _multi_frames(prefix, payload)
     lines.append(_finish([0x33, 0x05, 0x04, code & 0xFF, (code >> 8) & 0xFF]))
