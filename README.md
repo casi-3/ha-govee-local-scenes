@@ -9,14 +9,14 @@
 </p>
 
 <p align="center">
-  <a href="https://hacs.xyz"><img src="https://img.shields.io/badge/HACS-custom%20repository-41BDF5?logo=homeassistantcommunitystore&logoColor=white" alt="HACS"></a>
+  <a href="https://my.home-assistant.io/redirect/marketplace_repository/?owner=casi-3&repository=ha-govee-local-scenes&category=integration"><img src="https://img.shields.io/badge/Marketplace-custom%20repository-41BDF5?logo=homeassistant&logoColor=white" alt="Marketplace"></a>
   <a href="https://github.com/casi-3/ha-govee-local-scenes/releases"><img src="https://img.shields.io/github/v/release/casi-3/ha-govee-local-scenes?label=version&color=7E57C2" alt="Version"></a>
   <img src="https://img.shields.io/badge/Home%20Assistant-2026.10%2B-41BDF5?logo=homeassistant&logoColor=white" alt="Home Assistant 2026.10+">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/casi-3/ha-govee-local-scenes?color=9575CD" alt="Apache 2.0 License"></a>
 </p>
 
 <p align="center">
-  <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=casi-3&repository=ha-govee-local-scenes&category=integration"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open in HACS"></a>
+  <a href="https://my.home-assistant.io/redirect/marketplace_repository/?owner=casi-3&repository=ha-govee-local-scenes&category=integration"><img src="https://my.home-assistant.io/badges/marketplace_repository.svg" alt="Open in the Marketplace"></a>
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@
 > [!TIP]
 > **New in the 1.1 beta: paint your lights and preview every effect.**
 > Paint segments by hand, save your own patterns and browse all scenes with an animated preview, right from the light dialog in Home Assistant.
-> To try it, open the device of this repository in the **Marketplace** (HACS on Home Assistant versions before 2026.11), enable its **Pre-release** entity (it is disabled by default), turn it on and install the **1.1.0b1** update. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
+> To try it, open this repository in the **Marketplace**, choose **Include pre-releases** in its menu and install the **1.1.0b1** update. With HACS on older versions of Home Assistant, enable the **Pre-release** switch of the repository instead. Feedback is very welcome, for example with a [model feedback](https://github.com/casi-3/ha-govee-local-scenes/issues/new?template=model_feedback.yml).
 
 ## ✨ Highlights
 
@@ -43,16 +43,16 @@
 
 First enable **LAN Control** for your light in the Govee Home app (device settings).
 
-### With HACS (recommended)
+### With the Marketplace (recommended)
 
-Click the button below, then **Download** and restart Home Assistant.
+Click the button below, then **Download** and restart Home Assistant. On Home Assistant versions before 2026.11, the same button opens HACS instead.
 
-<a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=casi-3&repository=ha-govee-local-scenes&category=integration"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open in HACS"></a>
+<a href="https://my.home-assistant.io/redirect/marketplace_repository/?owner=casi-3&repository=ha-govee-local-scenes&category=integration"><img src="https://my.home-assistant.io/badges/marketplace_repository.svg" alt="Open in the Marketplace"></a>
 
 <details>
 <summary>Without the button</summary>
 
-1. In HACS, open the menu in the top right corner, then **Custom repositories**.
+1. In the Marketplace (or HACS), open the menu in the top right corner, then **Custom repositories**.
 2. Add `https://github.com/casi-3/ha-govee-local-scenes` with the type **Integration**.
 3. Install **Govee Local Scenes** and restart Home Assistant.
 
@@ -119,7 +119,7 @@ Thanks to everyone who took the time to test their lights and report back. Other
 
 ## 🗑️ Uninstall
 
-Remove the integration from HACS (or delete `custom_components/govee_light_local`) and restart Home Assistant. The built-in integration takes over again with the same config entry.
+Remove the integration from the Marketplace (or HACS, or delete `custom_components/govee_light_local`) and restart Home Assistant. The built-in integration takes over again with the same config entry.
 
 ## 🛠️ Troubleshooting
 
