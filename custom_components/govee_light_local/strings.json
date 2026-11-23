@@ -37,5 +37,59 @@
     "port_in_use": {
       "message": "Port {port} is already in use"
     }
+  },
+  "services": {
+    "set_segments": {
+      "name": "Paint segments",
+      "description": "Sets one color per segment of a Govee light.",
+      "fields": {
+        "entity_id": {
+          "name": "Lights",
+          "description": "Govee lights to paint."
+        },
+        "colors": {
+          "name": "Colors",
+          "description": "One hex color per segment, from the start of the light. Null turns a segment off."
+        }
+      }
+    },
+    "save_segment_pattern": {
+      "name": "Save pattern",
+      "description": "Saves a segment pattern. It then appears in the effect list of every Govee light.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Pattern name. An existing pattern with the same name is replaced."
+        },
+        "colors": {
+          "name": "Colors",
+          "description": "One hex color per segment. Null turns a segment off."
+        }
+      }
+    },
+    "delete_segment_pattern": {
+      "name": "Delete pattern",
+      "description": "Deletes a saved segment pattern.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Name of the pattern to delete."
+        }
+      }
+    },
+    "set_segment_count": {
+      "name": "Set segment count",
+      "description": "Sets how many segments a Govee light has.",
+      "fields": {
+        "entity_id": {
+          "name": "Lights",
+          "description": "Govee lights to update."
+        },
+        "count": {
+          "name": "Segments",
+          "description": "Number of segments, from 1 to 56."
+        }
+      }
+    }
   }
 }

@@ -37,5 +37,59 @@
         "port_in_use": {
             "message": "Le port {port} est d\u00e9j\u00e0 utilis\u00e9"
         }
+    },
+    "services": {
+        "set_segments": {
+            "name": "Peindre les segments",
+            "description": "Applique une couleur par segment sur une lampe Govee.",
+            "fields": {
+                "entity_id": {
+                    "name": "Lampes",
+                    "description": "Lampes Govee \u00e0 peindre."
+                },
+                "colors": {
+                    "name": "Couleurs",
+                    "description": "Une couleur hexad\u00e9cimale par segment, depuis le d\u00e9but de la lampe. Null \u00e9teint un segment."
+                }
+            }
+        },
+        "save_segment_pattern": {
+            "name": "Enregistrer un motif",
+            "description": "Enregistre un motif de segments. Il appara\u00eet ensuite dans la liste des effets de chaque lampe Govee.",
+            "fields": {
+                "name": {
+                    "name": "Nom",
+                    "description": "Nom du motif. Un motif existant du m\u00eame nom est remplac\u00e9."
+                },
+                "colors": {
+                    "name": "Couleurs",
+                    "description": "Une couleur hexad\u00e9cimale par segment. Null \u00e9teint un segment."
+                }
+            }
+        },
+        "delete_segment_pattern": {
+            "name": "Supprimer un motif",
+            "description": "Supprime un motif de segments enregistr\u00e9.",
+            "fields": {
+                "name": {
+                    "name": "Nom",
+                    "description": "Nom du motif \u00e0 supprimer."
+                }
+            }
+        },
+        "set_segment_count": {
+            "name": "R\u00e9gler le nombre de segments",
+            "description": "Indique combien de segments poss\u00e8de une lampe Govee.",
+            "fields": {
+                "entity_id": {
+                    "name": "Lampes",
+                    "description": "Lampes Govee \u00e0 modifier."
+                },
+                "count": {
+                    "name": "Segments",
+                    "description": "Nombre de segments, de 1 \u00e0 56."
+                }
+            }
+        }
     }
 }

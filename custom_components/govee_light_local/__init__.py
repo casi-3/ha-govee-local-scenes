@@ -13,8 +13,10 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
-from .const import DISCOVERY_TIMEOUT, DOMAIN
+from . import services, websocket
+from .const import DATA_LIGHTS, DATA_STORE, DISCOVERY_TIMEOUT, DOMAIN
 from .coordinator import GoveeLocalApiCoordinator, GoveeLocalConfigEntry
+from .patterns import PatternStore
 
 PLATFORMS: list[Platform] = [Platform.LIGHT]
 
@@ -23,6 +25,13 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: GoveeLocalConfigEntry) -> bool:
     """Set up Govee light local from a config entry."""
+
+    if DOMAIN not in hass.data:
+        store = PatternStore(hass)
+        await store.async_load()
+        hass.data[DOMAIN] = {DATA_STORE: store, DATA_LIGHTS: {}}
+        services.async_register(hass)
+        websocket.async_register(hass)
 
     source_ips = await async_get_source_ips(hass)
     _LOGGER.debug("Enabled source IPs: %s", source_ips)
@@ -82,6 +91,4 @@ async def async_get_source_ips(
 ) -> set[str]:
     """Get the source ips for Govee local."""
     source_ips = await network.async_get_enabled_source_ips(hass)
-    return {
-        str(source_ip) for source_ip in source_ips if isinstance(source_ip, IPv4Address)
-    }
+    return {str(source_ip) for source_ip in source_ips if isinstance(source_ip, IPv4Address)}

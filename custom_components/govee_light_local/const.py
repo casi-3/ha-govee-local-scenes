@@ -4,6 +4,9 @@ from datetime import timedelta
 
 DOMAIN = "govee_light_local"
 MANUFACTURER = "Govee"
+DATA_STORE = "store"
+DATA_LIGHTS = "lights"
+CONF_SHOW_PANEL = "show_panel"
 
 CONF_MULTICAST_ADDRESS_DEFAULT = "239.255.255.250"
 CONF_TARGET_PORT_DEFAULT = 4001

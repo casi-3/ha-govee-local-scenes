@@ -21,13 +21,22 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from .const import DEVICE_TIMEOUT, DOMAIN, MANUFACTURER
+from .const import DATA_LIGHTS, DATA_STORE, DEVICE_TIMEOUT, DOMAIN, MANUFACTURER
 from .coordinator import GoveeLocalApiCoordinator, GoveeLocalConfigEntry
-from .scene_library import SceneLibrary, send_scene
+from .patterns import PatternStore
+from .preview import animation
+from .scene_library import SceneLibrary, send_lines, send_scene
+from .segments import resample, segment_packets
 
 _LOGGER = logging.getLogger(__name__)
 
 _NONE_SCENE = "none"
+PATTERN_LABELS = {"fr": "Mes motifs"}
+PATTERN_LABEL = "My patterns"
+
+
+def pattern_label(language: str) -> str:
+    return PATTERN_LABELS.get(language.split("-")[0].lower(), PATTERN_LABEL)
 
 
 async def async_setup_entry(
@@ -39,9 +48,10 @@ async def async_setup_entry(
 
     coordinator = config_entry.runtime_data
     library = SceneLibrary(hass)
+    store: PatternStore = hass.data[DOMAIN][DATA_STORE]
 
     async def build(device: GoveeDevice) -> GoveeLight:
-        return GoveeLight(coordinator, device, await library.async_effects(device.sku))
+        return GoveeLight(coordinator, device, await library.async_effects(device.sku), store)
 
     async def add(device: GoveeDevice) -> None:
         async_add_entities([await build(device)])
@@ -81,6 +91,7 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         coordinator: GoveeLocalApiCoordinator,
         device: GoveeDevice,
         effects: dict[str, dict[str, Any]] | None = None,
+        store: PatternStore | None = None,
     ) -> None:
         """Govee Light constructor."""
 
@@ -101,17 +112,19 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
             if GoveeLightFeatures.BRIGHTNESS & capabilities.features:
                 color_modes.add(ColorMode.BRIGHTNESS)
 
-            if (
-                GoveeLightFeatures.SCENES & capabilities.features
-                and capabilities.scenes
-            ):
+            if GoveeLightFeatures.SCENES & capabilities.features and capabilities.scenes:
                 self._attr_supported_features = LightEntityFeature.EFFECT
                 self._attr_effect_list = [_NONE_SCENE, *capabilities.scenes.keys()]
 
         self._local_effects = effects or {}
+        self._store = store
+        self._pattern_effects: dict[str, str] = {}
+        self._base_effects = list(self._attr_effect_list or [])
         if self._local_effects:
             self._attr_supported_features = LightEntityFeature.EFFECT
             self._attr_effect_list = [_NONE_SCENE, *self._local_effects]
+            self._base_effects = list(self._attr_effect_list)
+        self._previews: list[dict[str, Any]] | None = None
 
         self._attr_supported_color_modes = filter_supported_color_modes(color_modes)
         if len(self._attr_supported_color_modes) == 1:
@@ -177,10 +190,7 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
 
         # The light supports both color temperature and RGB, determine which
         # mode the light is in
-        if (
-            self._device.temperature_color is not None
-            and self._device.temperature_color > 0
-        ):
+        if self._device.temperature_color is not None and self._device.temperature_color > 0:
             return ColorMode.COLOR_TEMP
         return ColorMode.RGB
 
@@ -200,7 +210,11 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         ):
             self._attr_effect = effect
             self._save_last_color_state()
-            if effect in self._local_effects:
+            if effect in self._pattern_effects:
+                if not self.is_on:
+                    await self.coordinator.turn_on(self._device)
+                await self._async_send_colors(self._pattern_colors(effect))
+            elif effect in self._local_effects:
                 if not self.is_on:
                     await self.coordinator.turn_on(self._device)
                 await self.hass.async_add_executor_job(
@@ -240,12 +254,83 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         """Register update callback when entity is added."""
         await super().async_added_to_hass()
         self._device.set_update_callback(self._update_callback)
+        self.hass.data[DOMAIN][DATA_LIGHTS][self.entity_id] = self
+        if self._store:
+            self._refresh_patterns()
+            self.async_on_remove(self._store.add_listener(self._patterns_changed))
 
     @override
     async def async_will_remove_from_hass(self) -> None:
         """Unregister update callback when entity is removed."""
         self._device.set_update_callback(None)
+        self.hass.data[DOMAIN][DATA_LIGHTS].pop(self.entity_id, None)
         await super().async_will_remove_from_hass()
+
+    @property
+    def fingerprint(self) -> str:
+        return str(self._device.fingerprint)
+
+    @property
+    def sku(self) -> str:
+        return str(self._device.sku)
+
+    @property
+    def segment_count(self) -> int:
+        if not self._store:
+            return 15
+        return self._store.segment_count(self._device.fingerprint, self.sku)
+
+    @property
+    def scene_previews(self) -> list[dict[str, Any]]:
+        if self._previews is None:
+            previews = []
+            for effect, scene in self._local_effects.items():
+                category, _, name = effect.rpartition(" · ")
+                previews.append(
+                    {
+                        "effect": effect,
+                        "category": category,
+                        "name": name or effect,
+                        "anim": animation(scene),
+                    }
+                )
+            self._previews = previews
+        return self._previews
+
+    def _refresh_patterns(self) -> None:
+        label = pattern_label(self.hass.config.language)
+        patterns = self._store.patterns if self._store else {}
+        self._pattern_effects = {f"{label} · {name}": name for name in patterns}
+        effects = list(self._base_effects)
+        if self._pattern_effects:
+            effects = [*(effects or [_NONE_SCENE]), *self._pattern_effects]
+        self._attr_effect_list = effects or None
+        if effects:
+            self._attr_supported_features |= LightEntityFeature.EFFECT
+        if self._attr_effect and self._attr_effect not in effects:
+            self._attr_effect = None
+
+    @callback
+    def _patterns_changed(self) -> None:
+        self._refresh_patterns()
+        self.async_write_ha_state()
+
+    def _pattern_colors(self, effect: str) -> list[str | None]:
+        name = self._pattern_effects[effect]
+        colors = self._store.patterns.get(name, []) if self._store else []
+        return resample(colors, self.segment_count)
+
+    async def _async_send_colors(self, colors: list[str | None]) -> None:
+        await self.hass.async_add_executor_job(send_lines, self._device.ip, segment_packets(colors))
+
+    async def async_paint(self, colors: list[str | None], final: bool = True) -> None:
+        if not self.is_on:
+            await self.coordinator.turn_on(self._device)
+        await self._async_send_colors(colors[: self.segment_count])
+        if final:
+            self._attr_effect = None
+            self._last_color_state = None
+            self.async_write_ha_state()
 
     @callback
     def _update_callback(self, device: GoveeDevice) -> None:
@@ -257,9 +342,7 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         self._last_color_state = (
             color_mode,
             self.brightness,
-            (self.color_temp_kelvin,)
-            if color_mode == ColorMode.COLOR_TEMP
-            else self.rgb_color,
+            (self.color_temp_kelvin,) if color_mode == ColorMode.COLOR_TEMP else self.rgb_color,
         )
 
     async def _restore_last_color_state(self) -> None:

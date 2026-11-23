@@ -1,0 +1,49 @@
+set_segments:
+  fields:
+    entity_id:
+      required: true
+      selector:
+        entity:
+          integration: govee_light_local
+          domain: light
+          multiple: true
+    colors:
+      required: true
+      example: '["#ff0000", "#ff7f00", null, "#0000ff"]'
+      selector:
+        object:
+save_segment_pattern:
+  fields:
+    name:
+      required: true
+      example: Sunset
+      selector:
+        text:
+    colors:
+      required: true
+      example: '["#ff3c00", "#ff8a00", "#ffd60a"]'
+      selector:
+        object:
+delete_segment_pattern:
+  fields:
+    name:
+      required: true
+      example: Sunset
+      selector:
+        text:
+set_segment_count:
+  fields:
+    entity_id:
+      required: true
+      selector:
+        entity:
+          integration: govee_light_local
+          domain: light
+          multiple: true
+    count:
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 56
+          mode: box

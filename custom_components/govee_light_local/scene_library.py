@@ -74,7 +74,10 @@ def scene_packets(code: int, param: str | None, scene_type: int) -> list[bytes]:
 
 
 def send_scene(ip: str, scene: dict[str, Any]) -> None:
-    lines = scene_packets(scene["code"], scene.get("param"), scene.get("type", 0))
+    send_lines(ip, scene_packets(scene["code"], scene.get("param"), scene.get("type", 0)))
+
+
+def send_lines(ip: str, lines: list[bytes]) -> None:
     message = {
         "msg": {
             "cmd": "ptReal",
