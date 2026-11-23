@@ -24,7 +24,7 @@ const TEXT = {
     search: "Search an effect",
     categories: "Categories",
     all: "All",
-    effect: "Effect",
+    effect: "Effect:",
     approx: "approximate preview",
     start: "Start",
     end: "End",
@@ -58,7 +58,7 @@ const TEXT = {
     search: "Rechercher un effet",
     categories: "Catégories",
     all: "Tout",
-    effect: "Effet",
+    effect: "Effet :",
     approx: "aperçu approximatif",
     start: "Début",
     end: "Fin",
@@ -635,7 +635,7 @@ class GoveeSegmentEditor extends HTMLElement {
     this._stopPreview();
     this._current = scene;
     el.classList.add("on");
-    this._$("now").innerHTML = `${escapeHtml(this._t.effect)} : <b>${escapeHtml(scene.effect)}</b><span class="badge">${escapeHtml(this._t.approx)}</span>`;
+    this._$("now").innerHTML = `${escapeHtml(this._t.effect)} <b>${escapeHtml(scene.effect)}</b><span class="badge">${escapeHtml(this._t.approx)}</span>`;
     this._frame = requestAnimationFrame((tm) => this._animate(tm));
     if (!this._reachable()) return;
     await this._call(() => this._hass.callService("light", "turn_on", { entity_id: this._entityId, effect: scene.effect }));

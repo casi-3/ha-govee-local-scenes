@@ -69,6 +69,9 @@ function openSheet(hass, entityId, title) {
   head.append(name, close);
   const body = document.createElement("div");
   body.className = "govee-sheet-body";
+  body.tabIndex = -1;
+  body.setAttribute("autofocus", "");
+  body.style.outline = "none";
   const editor = document.createElement("govee-segment-editor");
   editor.hass = hass;
   editor.entityId = entityId;
