@@ -10,7 +10,7 @@ from .const import DOMAIN
 
 STATIC_URL = f"/{DOMAIN}/frontend"
 STATIC_DIR = Path(__file__).with_name("frontend")
-FRONTEND_VERSION = "1.1.0"
+FRONTEND_VERSION = "1.1.0b1"
 PANEL_URL = "govee"
 DATA_STATIC = f"{DOMAIN}_static"
 

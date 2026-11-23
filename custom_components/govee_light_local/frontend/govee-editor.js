@@ -35,6 +35,7 @@ const TEXT = {
     less: "Fewer segments",
     more: "More segments",
     noScenes: "No effect for this light",
+    confirmDelete: (name) => `Delete the pattern "${name}" for everyone?`,
   },
   fr: {
     hint: "Touche ou glisse pour peindre",
@@ -68,6 +69,7 @@ const TEXT = {
     less: "Moins de segments",
     more: "Plus de segments",
     noScenes: "Aucun effet pour cette lampe",
+    confirmDelete: (name) => `Supprimer le motif « ${name} » pour tout le monde ?`,
   },
 };
 
@@ -635,6 +637,7 @@ class GoveeSegmentEditor extends HTMLElement {
     el.classList.add("on");
     this._$("now").innerHTML = `${escapeHtml(this._t.effect)} : <b>${escapeHtml(scene.effect)}</b><span class="badge">${escapeHtml(this._t.approx)}</span>`;
     this._frame = requestAnimationFrame((tm) => this._animate(tm));
+    if (!this._reachable()) return;
     await this._call(() => this._hass.callService("light", "turn_on", { entity_id: this._entityId, effect: scene.effect }));
   }
 
@@ -697,6 +700,7 @@ class GoveeSegmentEditor extends HTMLElement {
   }
 
   async _deletePattern(name) {
+    if (!confirm(this._t.confirmDelete(name))) return;
     await this._call(() => this._hass.callService("govee_light_local", "delete_segment_pattern", { name }), true);
     this._refreshPatterns();
   }
@@ -706,7 +710,15 @@ class GoveeSegmentEditor extends HTMLElement {
     this._cells = resample(this._patterns.patterns[name] || [], this._count);
     this._writeCells();
     this._renderStrip();
+    if (!this._reachable()) return;
     await this._call(() => this._hass.callService("light", "turn_on", { entity_id: this._entityId, effect: `${this._patterns.label} · ${name}` }));
+  }
+
+  _reachable() {
+    const state = this._hass && this._hass.states[this._entityId];
+    if (state && state.state !== "unavailable") return true;
+    this._status(this._t.failed);
+    return false;
   }
 
   async _call(fn, quiet = false) {

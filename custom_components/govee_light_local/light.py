@@ -16,6 +16,7 @@ from homeassistant.components.light import (
     filter_supported_color_modes,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -23,7 +24,7 @@ from homeassistant.util import dt as dt_util
 
 from .const import DATA_LIGHTS, DATA_STORE, DEVICE_TIMEOUT, DOMAIN, MANUFACTURER
 from .coordinator import GoveeLocalApiCoordinator, GoveeLocalConfigEntry
-from .patterns import PatternStore
+from .patterns import PatternStore, pattern_label, pattern_name
 from .preview import animation
 from .scene_library import SceneLibrary, send_lines, send_scene
 from .segments import resample, segment_packets
@@ -31,12 +32,6 @@ from .segments import resample, segment_packets
 _LOGGER = logging.getLogger(__name__)
 
 _NONE_SCENE = "none"
-PATTERN_LABELS = {"fr": "Mes motifs"}
-PATTERN_LABEL = "My patterns"
-
-
-def pattern_label(language: str) -> str:
-    return PATTERN_LABELS.get(language.split("-")[0].lower(), PATTERN_LABEL)
 
 
 async def async_setup_entry(
@@ -202,6 +197,13 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
             await self.coordinator.set_brightness(self._device, brightness)
 
         effect = kwargs.get(ATTR_EFFECT)
+        pattern = pattern_name(effect, self._store.patterns if self._store else ())
+        if pattern is not None:
+            label = f"{pattern_label(self.hass.config.language)} · {pattern}"
+            if label not in self._pattern_effects:
+                self._refresh_patterns()
+            effect = label
+            kwargs[ATTR_EFFECT] = label
         if (
             effect
             and effect != _NONE_SCENE
@@ -324,9 +326,12 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
         await self.hass.async_add_executor_job(send_lines, self._device.ip, segment_packets(colors))
 
     async def async_paint(self, colors: list[str | None], final: bool = True) -> None:
+        if not self.available:
+            raise HomeAssistantError(f"{self.entity_id} is not responding")
+        packets = segment_packets(colors[: self.segment_count])
         if not self.is_on:
             await self.coordinator.turn_on(self._device)
-        await self._async_send_colors(colors[: self.segment_count])
+        await self.hass.async_add_executor_job(send_lines, self._device.ip, packets)
         if final:
             self._attr_effect = None
             self._last_color_state = None

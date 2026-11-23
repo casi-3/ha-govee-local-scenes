@@ -53,5 +53,22 @@ class PatternBookTest(unittest.TestCase):
         self.assertEqual(copy.segment_count("x", "H6076"), 9)
 
 
+class PatternNameTest(unittest.TestCase):
+    def test_both_language_labels_resolve_the_same_pattern(self):
+        names = {"Noël", "Sunset · warm"}
+        self.assertEqual(patterns.pattern_name("Mes motifs · Noël", names), "Noël")
+        self.assertEqual(patterns.pattern_name("My patterns · Noël", names), "Noël")
+        self.assertEqual(
+            patterns.pattern_name("My patterns · Sunset · warm", names), "Sunset · warm"
+        )
+
+    def test_unknown_or_foreign_effects_do_not_resolve(self):
+        names = {"Noël"}
+        self.assertIsNone(patterns.pattern_name("My patterns · Absent", names))
+        self.assertIsNone(patterns.pattern_name("Nature · Noël", names))
+        self.assertIsNone(patterns.pattern_name("Noël", names))
+        self.assertIsNone(patterns.pattern_name(None, names))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,4 @@
-import "./govee-editor.js?v=1.1.0";
+import "./govee-editor.js?v=1.1.0b1";
 
 const STYLE = `
   :host {
@@ -134,7 +134,8 @@ class GoveePanel extends HTMLElement {
       const text = document.createElement("div");
       text.textContent = light.name;
       const small = document.createElement("small");
-      small.textContent = `${light.sku} · ${light.segment_count} segments`;
+      const offline = light.available === false ? ((this._hass.language || "en").startsWith("fr") ? " · hors ligne" : " · offline") : "";
+      small.textContent = `${light.sku} · ${light.segment_count} segments${offline}`;
       text.appendChild(small);
       b.append(dot, text);
       b.onclick = () => this._select(light.entity_id);

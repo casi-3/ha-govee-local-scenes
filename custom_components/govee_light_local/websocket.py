@@ -6,9 +6,10 @@ import voluptuous as vol
 
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import HomeAssistantError
 
 from .const import DATA_LIGHTS, DATA_STORE, DOMAIN
-from .light import pattern_label
+from .patterns import pattern_label
 
 COLORS = vol.All(list, vol.Length(min=1, max=56), [vol.Any(None, str)])
 
@@ -40,6 +41,7 @@ def ws_lights(hass: HomeAssistant, connection, msg: dict[str, Any]) -> None:
                 "name": state.name if state else entity_id,
                 "sku": light.sku,
                 "segment_count": light.segment_count,
+                "available": light.available,
             }
         )
     connection.send_result(msg["id"], lights)
@@ -66,6 +68,9 @@ async def ws_preview(hass: HomeAssistant, connection, msg: dict[str, Any]) -> No
     if light := _light(hass, connection, msg):
         try:
             await light.async_paint(msg["colors"], final=False)
+        except HomeAssistantError as err:
+            connection.send_error(msg["id"], "not_available", str(err))
+            return
         except (OSError, ValueError) as err:
             connection.send_error(msg["id"], "send_failed", str(err))
             return

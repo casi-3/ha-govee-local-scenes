@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from typing import TYPE_CHECKING, Any
 
 from .segments import MAX_SEGMENTS, default_count, parse_color
@@ -10,6 +10,24 @@ if TYPE_CHECKING:
 
 STORAGE_KEY = "govee_light_local.patterns"
 STORAGE_VERSION = 1
+PATTERN_LABEL = "My patterns"
+PATTERN_LABELS = {"fr": "Mes motifs"}
+SEPARATOR = " · "
+
+
+def pattern_label(language: str) -> str:
+    return PATTERN_LABELS.get(language.split("-")[0].lower(), PATTERN_LABEL)
+
+
+def pattern_name(effect: str | None, names: Iterable[str]) -> str | None:
+    if not effect:
+        return None
+    known = set(names)
+    for label in (PATTERN_LABEL, *PATTERN_LABELS.values()):
+        prefix = f"{label}{SEPARATOR}"
+        if effect.startswith(prefix) and effect[len(prefix) :] in known:
+            return effect[len(prefix) :]
+    return None
 
 
 def normalize_name(name: str | None) -> str:
