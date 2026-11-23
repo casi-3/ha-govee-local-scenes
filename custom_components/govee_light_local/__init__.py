@@ -14,9 +14,10 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from . import services, websocket
-from .const import DATA_LIGHTS, DATA_STORE, DISCOVERY_TIMEOUT, DOMAIN
+from .const import CONF_SHOW_PANEL, DATA_LIGHTS, DATA_STORE, DISCOVERY_TIMEOUT, DOMAIN
 from .coordinator import GoveeLocalApiCoordinator, GoveeLocalConfigEntry
 from .patterns import PatternStore
+from .ui import async_setup_frontend, async_update_panel
 
 PLATFORMS: list[Platform] = [Platform.LIGHT]
 
@@ -32,6 +33,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: GoveeLocalConfigEntry) -
         hass.data[DOMAIN] = {DATA_STORE: store, DATA_LIGHTS: {}}
         services.async_register(hass)
         websocket.async_register(hass)
+    await async_setup_frontend(hass)
+    await async_update_panel(hass, entry.options.get(CONF_SHOW_PANEL, True))
+    entry.async_on_unload(entry.add_update_listener(_async_options_updated))
 
     source_ips = await async_get_source_ips(hass)
     _LOGGER.debug("Enabled source IPs: %s", source_ips)
@@ -79,6 +83,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: GoveeLocalConfigEntry) -
     entry.runtime_data = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
+
+
+async def _async_options_updated(hass: HomeAssistant, entry: GoveeLocalConfigEntry) -> None:
+    await async_update_panel(hass, entry.options.get(CONF_SHOW_PANEL, True))
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: GoveeLocalConfigEntry) -> bool:

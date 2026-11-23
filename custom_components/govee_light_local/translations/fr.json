@@ -91,5 +91,18 @@
                 }
             }
         }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Govee lights local",
+                "data": {
+                    "show_panel": "Afficher la page Govee dans le menu"
+                },
+                "data_description": {
+                    "show_panel": "Ajoute une page Govee pour peindre les segments et parcourir les effets. Le bouton Peindre et effets de la fen\u00eatre de la lampe reste disponible dans tous les cas."
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant, callback
 
 from .const import DATA_LIGHTS, DATA_STORE, DOMAIN
+from .light import pattern_label
 
 COLORS = vol.All(list, vol.Length(min=1, max=56), [vol.Any(None, str)])
 
@@ -74,4 +75,10 @@ async def ws_preview(hass: HomeAssistant, connection, msg: dict[str, Any]) -> No
 @websocket_api.websocket_command({vol.Required("type"): "govee_light_local/patterns"})
 @callback
 def ws_patterns(hass: HomeAssistant, connection, msg: dict[str, Any]) -> None:
-    connection.send_result(msg["id"], hass.data[DOMAIN][DATA_STORE].patterns)
+    connection.send_result(
+        msg["id"],
+        {
+            "label": pattern_label(hass.config.language),
+            "patterns": hass.data[DOMAIN][DATA_STORE].patterns,
+        },
+    )

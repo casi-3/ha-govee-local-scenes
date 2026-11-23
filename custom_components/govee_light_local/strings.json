@@ -91,5 +91,18 @@
         }
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Govee lights local",
+        "data": {
+          "show_panel": "Show the Govee page in the sidebar"
+        },
+        "data_description": {
+          "show_panel": "Adds a Govee page to paint segments and browse effects. The Paint and effects button in the light dialog stays available either way."
+        }
+      }
+    }
   }
 }
