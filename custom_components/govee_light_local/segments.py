@@ -4,7 +4,7 @@ import re
 
 MAX_SEGMENTS = 56
 DEFAULT_SEGMENTS = 15
-KNOWN_SEGMENTS = {"H61D5": 14}
+KNOWN_SEGMENTS = {"H6076": 7, "H61D5": 14}
 MASK_BYTES = 7
 HEX_COLOR = re.compile(r"^#?([0-9a-fA-F]{6})$")
 

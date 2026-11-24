@@ -111,7 +111,7 @@ data:
 
 Colors are given from the start of the light, one per segment, `null` turns a segment off. Also available: `govee_light_local.save_segment_pattern`, `govee_light_local.delete_segment_pattern` and `govee_light_local.set_segment_count`.
 
-Lights do not report how many segments they have. Known models get the right count automatically (H61D5: 14), other lights start at 15 and can be adjusted in the editor.
+Lights do not report how many segments they have. Known models get the right count automatically (H6076: 7, H61D5: 14), other lights start at 15 and can be adjusted in the editor.
 
 ## ⚙️ How it works
 

@@ -65,7 +65,8 @@ class ResampleTest(unittest.TestCase):
 
     def test_known_model_count(self):
         self.assertEqual(segments.default_count("h61d5"), 14)
-        self.assertEqual(segments.default_count("H6076"), 15)
+        self.assertEqual(segments.default_count("H6076"), 7)
+        self.assertEqual(segments.default_count("H6022"), 15)
 
 
 if __name__ == "__main__":
