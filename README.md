@@ -130,6 +130,7 @@ If no catalog can be found, the light keeps the scenes of the built-in integrati
 | Model | Confirmed by |
 | --- | --- |
 | H3A53 | [Shmo-jo](https://github.com/Shmo-jo) |
+| H6022 | [ninet4-ha](https://github.com/ninet4-ha) |
 | H6076 | [casi-3](https://github.com/casi-3) |
 | H610A | [Shmo-jo](https://github.com/Shmo-jo) |
 | H61D5 | [casi-3](https://github.com/casi-3) |
